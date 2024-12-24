@@ -1,0 +1,15 @@
+[project]
+name = "whatsapp-integration"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10.0"
+dependencies = [
+    "celery>=5.3",
+    "django-environ>=0.11.2",
+    "django>=4.2,<5.0",
+    "djangorestframework>=3.14",
+    "redis>=4.5",
+    "twilio>=9.4.1",
+    "gunicorn>=23.0.0",
+]
