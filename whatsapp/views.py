@@ -52,9 +52,7 @@ class SendMessageView(APIView):
                 data["sender"], data["receiver"], data["content"]
             )
             logger.info(f"Message queued successfully for {data['receiver']}")
-            return Response(
-                {"status": "Message queued"}, status=status.HTTP_202_ACCEPTED
-            )
+            return Response({"status": "Message sent"}, status=status.HTTP_202_ACCEPTED)
         except KeyError as e:
             # Log the error and raise an exception
             logger.error(f"Missing required field: {str(e)}")

@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: python_app
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONDONTWRITEBYTECODE=1
+      - PYTHONUNBUFFERED=1
+      - APP_RUNTIME=docker
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - TWILIO_ACCOUNT_SID=AC6ece9ea6d0db4b3367ae06d1f50d3e32
+      - TWILIO_AUTH_TOKEN=bcc228637269c8aa003dbccb7dd3433a
+
+    volumes:
+      - .:/app
+    command: ["./rungunicorn.sh"]
+    depends_on:
+      - redis
+      - celery_worker
+
+  redis:
+    image: redis:6.2
+    container_name: redis
+    ports:
+      - "6379:6379"
+    command: ["redis-server"]
+
+  celery_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: celery_worker
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - TWILIO_ACCOUNT_SID=AC6ece9ea6d0db4b3367ae06d1f50d3e32
+      - TWILIO_AUTH_TOKEN=bcc228637269c8aa003dbccb7dd3433a
+    command: ["celery", "-A", "whatsapp_integration.celery.app", "worker", "--loglevel=info"]
+    depends_on:
+      - redis
+
+networks:
+  default:
+    name: app_network

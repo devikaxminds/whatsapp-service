@@ -23,26 +23,22 @@ cd <project_dir>
 ```bash
   git clone <giturl>
 ```
-3. Go to the project directory
+3. Set the Twilio account for getting TWILIO_ACCOUNT_SID and AUTH_TOKEN
 ```bash
-  cd whatsapp_integration
+  https://www.twilio.com/docs
 ```
-4. Install dependencies
+4. Add the Twilio credentials to docker-compose.yml file
 ```bash
-  uv sync
-```
-5. Create `.env` file inside `<projectdir>/whatsapp_integration`, you can copy .env.example -> .env
-6. Run migrations
-```bash
-  uv run python manage.py migrate
+  TWILIO_ACCOUNT_SID=<twilio account SID>
+  TWILIO_AUTH_TOKEN=<Auth token>
 ```
 8. Create a super user
 ```bash
    uv run python manage.py createsuperuser
 ```
-9. Start the dev server
+9. Run the docker
 ```bash
-  uv run python manage.py runserver
+  docker-compose up
 ```
 10. Endpoint
 http://127.0.0.1:8000/
